@@ -5,10 +5,16 @@ using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using GtMotive.Estimate.Microservice.Api;
+using GtMotive.Estimate.Microservice.Domain.Interfaces;
+using GtMotive.Estimate.Microservice.Domain.Repositories;
+using GtMotive.Estimate.Microservice.Domain.Services;
 using GtMotive.Estimate.Microservice.Host.Configuration;
 using GtMotive.Estimate.Microservice.Host.DependencyInjection;
 using GtMotive.Estimate.Microservice.Infrastructure;
 using GtMotive.Estimate.Microservice.Infrastructure.MongoDb.Settings;
+using GtMotive.Estimate.Microservice.Infrastructure.Repositories;
+using GtMotive.Estimate.Microservice.Infrastructure.SqlServer;
+using GtMotive.Estimate.Microservice.Infrastructure.SqlServer.Settings;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
@@ -61,6 +67,7 @@ var appSettingsSection = builder.Configuration.GetSection("AppSettings");
 builder.Services.Configure<AppSettings>(appSettingsSection);
 var appSettings = appSettingsSection.Get<AppSettings>();
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDb"));
+builder.Services.Configure<SqlServerDbSettings>(builder.Configuration.GetSection("SqlServerDb"));
 
 builder.Services.AddControllers(ApiConfiguration.ConfigureControllers)
     .WithApiControllers();
@@ -94,7 +101,16 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSwagger(appSettings, builder.Configuration);
 
+builder.Services.AddScoped<SqlServerService>();
+builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
+builder.Services.AddScoped<IVehicleService, VehicleService>();
+
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    await SqlServerService.RunMockDatabaseAsync();
+}
 
 // Logging configuration.
 Log.Logger = builder.Environment.IsDevelopment() ?
