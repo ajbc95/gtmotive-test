@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Threading.Tasks;
 using GtMotive.Estimate.Microservice.Api;
+using GtMotive.Estimate.Microservice.Host;
 using GtMotive.Estimate.Microservice.Infrastructure;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -12,9 +15,10 @@ using Xunit;
 
 namespace GtMotive.Estimate.Microservice.FunctionalTests.Infrastructure
 {
-    internal sealed class CompositionRootTestFixture : IDisposable, IAsyncLifetime
+    public sealed class CompositionRootTestFixture : IDisposable, IAsyncLifetime
     {
         private readonly ServiceProvider _serviceProvider;
+        private readonly WebApplicationFactory<Program> _factory;
 
         public CompositionRootTestFixture()
         {
@@ -23,14 +27,21 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Infrastructure
                 .AddEnvironmentVariables()
                 .Build();
 
+            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
+
             var services = new ServiceCollection();
             Configuration = configuration;
             ConfigureServices(services);
             services.AddSingleton<IConfiguration>(configuration);
             _serviceProvider = services.BuildServiceProvider();
+
+            _factory = new WebApplicationFactory<Program>();
+            Client = _factory.CreateClient();
         }
 
         public IConfiguration Configuration { get; }
+
+        public HttpClient Client { get; }
 
         public async Task InitializeAsync()
         {
@@ -87,6 +98,7 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Infrastructure
         public void Dispose()
         {
             _serviceProvider.Dispose();
+            _factory.Dispose();
         }
 
         private static void ConfigureServices(IServiceCollection services)

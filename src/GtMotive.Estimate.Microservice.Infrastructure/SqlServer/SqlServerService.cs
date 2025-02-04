@@ -21,14 +21,21 @@ namespace GtMotive.Estimate.Microservice.Infrastructure.SqlServer
         /// Run a SQL Server container with a mock database.
         /// </summary>
         /// <param name="dbName">Database name.</param>
+        /// <param name="randomHostPort">Randomize hot port, 1434 by default.</param>
         /// <returns>Mock database connection string.</returns>
-        public static async Task<string> RunMockDatabaseAsync(string dbName = "GtMotive")
+        public static async Task<string> RunMockDatabaseAsync(string dbName = "GtMotive", bool randomHostPort = false)
         {
-            var sqlContainer = new MsSqlBuilder()
-                .WithName($"gtmotive-sqlserver-{Guid.NewGuid().ToString()[..5]}")
-                .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
-                .WithPortBinding(1434, 1433)
-                .Build();
+            var containerName = $"gtmotive-sqlserver-{Guid.NewGuid().ToString()[..5]}";
+            var containerImage = "mcr.microsoft.com/mssql/server:2022-latest";
+            var sqlServerPort = 1433;
+
+            var sqlContainer = new MsSqlBuilder().WithName(containerName).WithImage(containerImage).WithPortBinding(1434, sqlServerPort).Build();
+
+            if (randomHostPort)
+            {
+                sqlContainer = new MsSqlBuilder().WithName(containerName).WithImage(containerImage).WithPortBinding(sqlServerPort, true).Build();
+            }
+
             await sqlContainer.StartAsync();
             var connString = sqlContainer.GetConnectionString();
 
@@ -39,7 +46,7 @@ namespace GtMotive.Estimate.Microservice.Infrastructure.SqlServer
             var dacServices = new DacServices(connString);
             dacServices.ImportBacpac(bacpac, dbName);
 
-            return connString.Replace("master", dbName, System.StringComparison.InvariantCulture);
+            return connString.Replace("master", dbName, StringComparison.InvariantCulture);
         }
     }
 }

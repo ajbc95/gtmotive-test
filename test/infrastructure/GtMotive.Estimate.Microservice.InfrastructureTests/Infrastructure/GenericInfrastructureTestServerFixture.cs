@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using GtMotive.Estimate.Microservice.Infrastructure.SqlServer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace GtMotive.Estimate.Microservice.InfrastructureTests.Infrastructure
 {
-    internal sealed class GenericInfrastructureTestServerFixture : IDisposable
+    public sealed class GenericInfrastructureTestServerFixture : IDisposable
     {
         public GenericInfrastructureTestServerFixture()
         {
@@ -19,10 +20,16 @@ namespace GtMotive.Estimate.Microservice.InfrastructureTests.Infrastructure
                 .ConfigureAppConfiguration((context, builder) => { builder.AddEnvironmentVariables(); })
                 .UseStartup<Startup>();
 
+            var connString = SqlServerService.RunMockDatabaseAsync(randomHostPort: true);
+            connString.Wait();
+
+            ConnectionString = connString.Result;
             Server = new TestServer(hostBuilder);
         }
 
         public TestServer Server { get; }
+
+        public string ConnectionString { get; private set; }
 
         /// <inheritdoc />
         public void Dispose()
