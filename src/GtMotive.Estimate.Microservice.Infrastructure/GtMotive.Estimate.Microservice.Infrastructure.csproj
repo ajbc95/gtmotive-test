@@ -7,11 +7,24 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="SqlServer\Mock\GtMotive.bacpac" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="SqlServer\Mock\GtMotive.bacpac">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Dapper" />
         <PackageReference Include="Microsoft.ApplicationInsights" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
         <PackageReference Include="MongoDB.Bson" />
         <PackageReference Include="MongoDB.Driver" />
         <PackageReference Include="Polly" />
+        <PackageReference Include="Testcontainers.MsSql" />
+        <PackageReference Include="Microsoft.SqlServer.DacFx" />
     </ItemGroup>
 
     <ItemGroup>
