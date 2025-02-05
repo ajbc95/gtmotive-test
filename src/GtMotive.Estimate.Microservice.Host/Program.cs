@@ -117,11 +117,6 @@ namespace GtMotive.Estimate.Microservice.Host
 
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
-            {
-                await SqlServerService.RunMockDatabaseAsync();
-            }
-
             // Logging configuration.
             Log.Logger = builder.Environment.IsDevelopment() ?
                 new LoggerConfiguration()

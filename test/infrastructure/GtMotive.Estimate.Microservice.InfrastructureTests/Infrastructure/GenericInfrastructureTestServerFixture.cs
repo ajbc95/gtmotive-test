@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
-using GtMotive.Estimate.Microservice.Infrastructure.SqlServer;
+using GtMotive.Estimate.Microservice.Fixture.Database;
+using GtMotive.Estimate.Microservice.Fixture.Database.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
@@ -20,10 +21,10 @@ namespace GtMotive.Estimate.Microservice.InfrastructureTests.Infrastructure
                 .ConfigureAppConfiguration((context, builder) => { builder.AddEnvironmentVariables(); })
                 .UseStartup<Startup>();
 
-            var connString = SqlServerService.RunMockDatabaseAsync(randomHostPort: true);
-            connString.Wait();
+            var sqlContainer = MockDatabase.DeploySqlServerAsync();
+            sqlContainer.Wait();
 
-            ConnectionString = connString.Result;
+            ConnectionString = sqlContainer.Result.GetGtMotiveConnectionString();
             Server = new TestServer(hostBuilder);
         }
 

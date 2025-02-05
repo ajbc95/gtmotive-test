@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GtMotive.Estimate.Microservice.Api;
+using GtMotive.Estimate.Microservice.Fixture.Database;
 using GtMotive.Estimate.Microservice.Host;
 using GtMotive.Estimate.Microservice.Infrastructure;
 using MediatR;
@@ -23,7 +24,7 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Infrastructure
         public CompositionRootTestFixture()
         {
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
 
@@ -35,6 +36,8 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Infrastructure
             services.AddSingleton<IConfiguration>(configuration);
             _serviceProvider = services.BuildServiceProvider();
 
+            MockDatabase.DeploySqlServerAsync(1435).Wait();
+
             _factory = new WebApplicationFactory<Program>();
             Client = _factory.CreateClient();
         }
@@ -43,14 +46,14 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Infrastructure
 
         public HttpClient Client { get; }
 
-        public async Task InitializeAsync()
+        public Task InitializeAsync()
         {
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
-        public async Task DisposeAsync()
+        public Task DisposeAsync()
         {
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
         public async Task UsingHandlerForRequest<TRequest>(Func<IRequestHandler<TRequest, Unit>, Task> handlerAction)

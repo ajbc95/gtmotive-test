@@ -36,6 +36,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GtMotive.Estimate.Microserv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GtMotive.Estimate.Microservice.Host", "GtMotive.Estimate.Microservice.Host\GtMotive.Estimate.Microservice.Host.csproj", "{9F5951E0-9865-4EE9-A32A-DC545BF21C95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtMotive.Estimate.Microservice.Fixture.Database", "..\test\GtMotive.Estimate.Microservice.Database.Fixture\GtMotive.Estimate.Microservice.Fixture.Database.csproj", "{69EF6EB8-834B-4FD5-8627-065CFAA8122D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{9F5951E0-9865-4EE9-A32A-DC545BF21C95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F5951E0-9865-4EE9-A32A-DC545BF21C95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F5951E0-9865-4EE9-A32A-DC545BF21C95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69EF6EB8-834B-4FD5-8627-065CFAA8122D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69EF6EB8-834B-4FD5-8627-065CFAA8122D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69EF6EB8-834B-4FD5-8627-065CFAA8122D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69EF6EB8-834B-4FD5-8627-065CFAA8122D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 		{5F6CD05A-A921-49B8-BF96-1B931022439C} = {9759AD80-2ECC-4B44-8D15-B96BD29CB584}
 		{157090A2-A86C-4F2A-A31D-3072779E4D99} = {DAFC007D-B55D-4498-B94E-ACFB38698698}
 		{9F5951E0-9865-4EE9-A32A-DC545BF21C95} = {DAFC007D-B55D-4498-B94E-ACFB38698698}
+		{69EF6EB8-834B-4FD5-8627-065CFAA8122D} = {32507AA8-A629-48CC-9F32-CBCF746E2117}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {082C0E30-A2C7-439B-AE7B-129FEC797BEA}

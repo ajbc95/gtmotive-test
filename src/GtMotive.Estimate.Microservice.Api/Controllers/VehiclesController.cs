@@ -30,7 +30,7 @@ namespace GtMotive.Estimate.Microservice.Api.Controllers
             return Ok(vehicleId);
         }
 
-        [HttpGet]
+        [HttpGet("available")]
         [ProducesResponseType(typeof(IEnumerable<Vehicle>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

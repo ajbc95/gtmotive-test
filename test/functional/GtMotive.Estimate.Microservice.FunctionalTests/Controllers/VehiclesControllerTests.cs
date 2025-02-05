@@ -36,7 +36,7 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Controllers
             await Fixture.Client.PostAsJsonAsync("/api/vehicles", vehicleDto);
 
             // Act
-            var response = await Fixture.Client.GetAsync("/api/vehicles");
+            var response = await Fixture.Client.GetAsync("/api/vehicles/available");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
