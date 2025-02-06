@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <PackageReference Include="Acheve.TestHost" />
+        <PackageReference Include="Respawn" />
     </ItemGroup>
 
     <ItemGroup>

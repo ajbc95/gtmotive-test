@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using DotNet.Testcontainers.Containers;
-using Microsoft.SqlServer.Dac;
+﻿using GtMotive.Estimate.Microservice.Fixture.Database.Extensions;
 using Testcontainers.MsSql;
 
 namespace GtMotive.Estimate.Microservice.Fixture.Database
@@ -16,7 +14,7 @@ namespace GtMotive.Estimate.Microservice.Fixture.Database
         /// <param name="hostPort">Host port.</param>
         /// <param name="includeBacpac">Include bacpac with test data.</param>
         /// <returns>The DB container instante.</returns>
-        public static async Task<IDatabaseContainer> DeploySqlServerAsync(int? hostPort = null, bool includeBacpac = true)
+        public static async Task<MsSqlContainer> DeploySqlServerAsync(int? hostPort = null, bool includeBacpac = true)
         {
             var containerName = $"gtmotive-sqlserver-{Guid.NewGuid().ToString()[..5]}";
             var containerImage = "mcr.microsoft.com/mssql/server:2022-latest";
@@ -33,12 +31,7 @@ namespace GtMotive.Estimate.Microservice.Fixture.Database
 
             if (includeBacpac)
             {
-                var assembly = Assembly.GetExecutingAssembly();
-                var bacpacStream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.SqlServer.{Constants.SqlServerDatabaseName}.bacpac");
-                var bacpac = BacPackage.Load(bacpacStream);
-
-                var dacServices = new DacServices(sqlContainer.GetConnectionString());
-                dacServices.ImportBacpac(bacpac, Constants.SqlServerDatabaseName);
+                sqlContainer.DeployTestData();
             }
 
             return sqlContainer;

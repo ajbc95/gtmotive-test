@@ -12,7 +12,7 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Infrastructure
 
         public async Task InitializeAsync()
         {
-            await Task.CompletedTask;
+            await Fixture.RestoreDatabaseAsync();
         }
 
         public async Task DisposeAsync()

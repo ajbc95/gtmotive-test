@@ -4,12 +4,15 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using GtMotive.Estimate.Microservice.Api;
 using GtMotive.Estimate.Microservice.Fixture.Database;
+using GtMotive.Estimate.Microservice.Fixture.Database.Extensions;
 using GtMotive.Estimate.Microservice.Host;
 using GtMotive.Estimate.Microservice.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Respawn;
+using Testcontainers.MsSql;
 using Xunit;
 
 [assembly: CLSCompliant(false)]
@@ -20,6 +23,8 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Infrastructure
     {
         private readonly ServiceProvider _serviceProvider;
         private readonly WebApplicationFactory<Program> _factory;
+        private MsSqlContainer _sqlServer;
+        private Respawner _sqlRespawner;
 
         public CompositionRootTestFixture()
         {
@@ -36,8 +41,6 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Infrastructure
             services.AddSingleton<IConfiguration>(configuration);
             _serviceProvider = services.BuildServiceProvider();
 
-            MockDatabase.DeploySqlServerAsync(1435).Wait();
-
             _factory = new WebApplicationFactory<Program>();
             Client = _factory.CreateClient();
         }
@@ -46,14 +49,20 @@ namespace GtMotive.Estimate.Microservice.FunctionalTests.Infrastructure
 
         public HttpClient Client { get; }
 
-        public Task InitializeAsync()
+        public void DeployInitialTestData() => _sqlServer.DeployTestData();
+
+        public Task RestoreDatabaseAsync() => _sqlRespawner.ResetAsync(_sqlServer.GetGtMotiveConnectionString());
+
+        public async Task InitializeAsync()
         {
-            return Task.CompletedTask;
+            _sqlServer = await MockDatabase.DeploySqlServerAsync(1435);
+            _sqlRespawner = await _sqlServer.GetSqlRespawnerAsync();
         }
 
-        public Task DisposeAsync()
+        public async Task DisposeAsync()
         {
-            return Task.CompletedTask;
+            await _sqlServer.StopAsync();
+            await _sqlServer.DisposeAsync();
         }
 
         public async Task UsingHandlerForRequest<TRequest>(Func<IRequestHandler<TRequest, Unit>, Task> handlerAction)
