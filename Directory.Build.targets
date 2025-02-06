@@ -86,6 +86,7 @@
         <PackageReference Update="Swashbuckle.AspNetCore.Annotations" Version="5.0.0" />
         <PackageReference Update="NodaTime" Version="3.0.5" />
         <PackageReference Update="TimeZoneNames" Version="4.1.0" />
+        <PackageReference Update="Dapper" Version="2.1.35" />
 
         <!-- Polly -->
         <PackageReference Update="Polly" Version="7.2.3" />
@@ -104,6 +105,9 @@
         <PackageReference Update="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.0" />
         <PackageReference Update="Respawn" Version="6.2.1" />
         <PackageReference Update="Moq" Version="4.18.1" />
+        <PackageReference Update="Testcontainers.MsSql" Version="4.1.0" />
+        <PackageReference Update="Microsoft.SqlServer.DacFx" Version="162.5.57" />
+        <PackageReference Update="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
 
         <!-- DbUp -->
         <PackageReference Update="dbup-sqlserver" Version="4.5.0" />

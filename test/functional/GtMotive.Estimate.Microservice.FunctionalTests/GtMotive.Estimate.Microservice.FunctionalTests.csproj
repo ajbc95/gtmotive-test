@@ -5,14 +5,11 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>1591</NoWarn>
         <IsPackable>false</IsPackable>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="appsettings.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="appsettings.json">
+        <Content Include="appsettings.Development.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -20,6 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Acheve.TestHost" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
         <PackageReference Include="Microsoft.Data.SqlClient" />
         <PackageReference Include="Respawn" />
@@ -27,10 +26,13 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\src\GtMotive.Estimate.Microservice.Api\GtMotive.Estimate.Microservice.Api.csproj" />
+        <ProjectReference Include="..\..\..\src\GtMotive.Estimate.Microservice.Host\GtMotive.Estimate.Microservice.Host.csproj" />
         <ProjectReference Include="..\..\..\src\GtMotive.Estimate.Microservice.Infrastructure\GtMotive.Estimate.Microservice.Infrastructure.csproj" />
+        <ProjectReference Include="..\..\GtMotive.Estimate.Microservice.Database.Fixture\GtMotive.Estimate.Microservice.Fixture.Database.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Controllers\" />
         <Folder Include="Specs\" />
     </ItemGroup>
 

@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Run with test DB",
+    "Projects": [
+      {
+        "Path": "..\\test\\GtMotive.Estimate.Microservice.Database.Fixture\\GtMotive.Estimate.Microservice.Fixture.Database.csproj",
+        "Action": "StartWithoutDebugging"
+      },
+      {
+        "Path": "GtMotive.Estimate.Microservice.Host\\GtMotive.Estimate.Microservice.Host.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

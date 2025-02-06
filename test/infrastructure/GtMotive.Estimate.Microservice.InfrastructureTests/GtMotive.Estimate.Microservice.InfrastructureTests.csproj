@@ -9,11 +9,13 @@
 
     <ItemGroup>
         <PackageReference Include="Acheve.TestHost" />
+        <PackageReference Include="Respawn" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\src\GtMotive.Estimate.Microservice.Api\GtMotive.Estimate.Microservice.Api.csproj" />
         <ProjectReference Include="..\..\..\src\GtMotive.Estimate.Microservice.Infrastructure\GtMotive.Estimate.Microservice.Infrastructure.csproj" />
+        <ProjectReference Include="..\..\GtMotive.Estimate.Microservice.Database.Fixture\GtMotive.Estimate.Microservice.Fixture.Database.csproj" />
     </ItemGroup>
 
     <ItemGroup>
