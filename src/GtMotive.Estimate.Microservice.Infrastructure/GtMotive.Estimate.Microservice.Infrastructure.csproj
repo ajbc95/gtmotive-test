@@ -7,16 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="SqlServer\Mock\GtMotive.bacpac" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Include="SqlServer\Mock\GtMotive.bacpac">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="Dapper" />
         <PackageReference Include="Microsoft.ApplicationInsights" />
         <PackageReference Include="Microsoft.Data.SqlClient" />
